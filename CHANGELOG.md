@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.0.3] - 2025-11-12
+
+### Added
+
+- Add new `GET` endpoint `/api/pos/filter?name={name}` that allows API users to get a `POS` based on its name.
+
+### Changed
+
+- n/a
+
+### Removed
+
+- n/a
+
 ## [0.0.2] - 2025-11-12
 
 ### Added
