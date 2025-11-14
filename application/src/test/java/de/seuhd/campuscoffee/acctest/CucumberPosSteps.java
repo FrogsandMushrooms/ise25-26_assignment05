@@ -92,6 +92,11 @@ public class CucumberPosSteps {
     }
 
     // TODO: Add Given step for new scenario
+    @Given("a POS list with the following elements")
+    public void createPosWithElements(List<PosDto> posList) {
+        createdPosList = createPos(posList);
+        assertThat(createdPosList).size().isEqualTo(posList.size());
+    }
 
     // When -----------------------------------------------------------------------
 
@@ -102,6 +107,29 @@ public class CucumberPosSteps {
     }
 
     // TODO: Add When step for new scenario
+    @When("I update the POS with the name \"Schmelzpunkt\" with the description \"Awful Waffles\"")
+    public void updateSchmelzpunktAwfulWaffles() {
+        PosDto retrievedPos = retrievePosByName("Schmelzpunkt");
+        PosDto newPos = PosDto.builder()
+                .name(retrievedPos.name())
+                .description("Awful waffles")
+                .type(retrievedPos.type())
+                .campus(retrievedPos.campus())
+                .street(retrievedPos.street())
+                .houseNumber(retrievedPos.houseNumber())
+                .postalCode(retrievedPos.postalCode())
+                .city(retrievedPos.city())
+                .build();
+        updatedPos = newPos;
+        List<PosDto> updatedPosList = retrievePos().stream().map(x -> {
+            if (x.name().equals("Schmelzpunkt")) {
+                return newPos;
+            } else {
+                return x;
+            }
+        }).toList();
+        updatePos(updatedPosList);
+    }
 
     // Then -----------------------------------------------------------------------
 
@@ -114,4 +142,11 @@ public class CucumberPosSteps {
     }
 
     // TODO: Add Then step for new scenario
+    @Then("Schmelzpunkt has the description \"Awful waffles\"")
+    public void thePOSListShouldContainTheSameElementsInTheSameOrderButWithSchmelzpunktHavingAwfulWaffles() {
+        PosDto retrievedPos = retrievePosByName("Schmelzpunkt");
+        assertThat(retrievedPos)
+                .usingRecursiveComparison()
+                .isEqualTo(updatedPos);
+    }
 }
